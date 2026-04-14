@@ -138,17 +138,17 @@ export const FIXES: Fix[] = [
 ];
 
 export const PROCESS_STEPS: ProcessStep[] = [
-  { num: "01", title: "Spot it",      desc: "Run the app in simulator. Screenshot any visual bug." },
-  { num: "02", title: "Post it",      desc: "Drop in your team's Slack channel with 'bug' + description." },
-  { num: "03", title: "Auto-ticket",  desc: "Slack workflow checks Linear, creates a ticket if new." },
-  { num: "04", title: "Auto-fix",     desc: "@BuilderBot finds the component, makes the fix, opens a PR." },
-  { num: "05", title: "Ship it",      desc: "Review, test snapshots, merge. Done." },
+  { num: "01", title: "Spot it",      desc: "Run the app in simulator or on device. Screenshot any visual bug." },
+  { num: "02", title: "Post it",      desc: "Drop it in #cash-design-bugs with 'bug' + which team or area." },
+  { num: "03", title: "Auto-ticket",  desc: "Slack workflow creates a Linear ticket on the Design QA board." },
+  { num: "04", title: "Auto-fix",     desc: "@BuilderBot picks up the ticket, finds the component, opens a PR." },
+  { num: "05", title: "Ship it",      desc: "Engineer reviews, merges — fix appears on Polish Cash automatically." },
 ];
 
 export const SETUP_STEPS: SetupStep[] = [
-  { id: 1, title: "Create Slack channel",  desc: "Dedicated channel for your team's fixes",    action: "Open Slack →" },
-  { id: 2, title: "Install workflows",     desc: "Bug detection + Linear integration",          action: "Import →" },
-  { id: 3, title: "Connect Linear",        desc: "Link your team's project board",              action: "Open Linear →" },
-  { id: 4, title: "Add BuilderBot",        desc: "Invite the bot to your channel",              action: "Configure →" },
-  { id: 5, title: "First debug session",   desc: "Find a bug and post it",                      action: "Go →" },
+  { id: 1, title: "Join #cash-design-bugs",   desc: "The single Slack channel for all design bug reports",   action: "Open Slack →" },
+  { id: 2, title: "Install the Slack workflow", desc: "Adds the bug → Linear ticket automation to the channel", action: "Import →" },
+  { id: 3, title: "Check Linear access",       desc: "Make sure you can see the Design QA board",             action: "Open Linear →" },
+  { id: 4, title: "Post your first bug",       desc: "Say 'bug' + team name + description with a screenshot", action: "Go →" },
+  { id: 5, title: "Watch it land",             desc: "Track the ticket → PR → merge → dashboard flow",        action: "View feed →" },
 ];

@@ -1,0 +1,30 @@
+.feed {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.empty {
+  text-align: center;
+  padding: 80px 0;
+}
+
+.emptyTitle {
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  color: var(--color-text-muted);
+  margin-bottom: 16px;
+}
+
+.emptyButton {
+  padding: 12px 28px;
+  border-radius: var(--radius-full);
+  background: var(--color-green);
+  color: var(--color-black);
+  font-size: 15px;
+  font-weight: 600;
+}

@@ -1,0 +1,47 @@
+.feed {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  background: var(--color-white);
+}
+
+.imageArea {
+  height: 280px;
+  background: var(--color-gray-100);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.infoBar {
+  padding: 20px 24px 22px;
+}
+
+.titleLine {
+  height: 20px;
+  width: 70%;
+  border-radius: 8px;
+  background: var(--color-gray-100);
+  margin-bottom: 12px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.metaLine {
+  height: 14px;
+  width: 50%;
+  border-radius: 8px;
+  background: var(--color-gray-100);
+  animation: pulse 1.5s ease-in-out infinite;
+  animation-delay: 0.15s;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}

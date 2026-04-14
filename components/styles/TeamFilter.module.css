@@ -1,0 +1,30 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 32px 48px;
+  flex-wrap: wrap;
+}
+
+.button {
+  padding: 9px 22px;
+  border-radius: var(--radius-full);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  transition: background 0.2s, color 0.2s;
+}
+
+.button[aria-pressed="true"] {
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
+.button[aria-pressed="false"] {
+  background: var(--color-gray-100);
+  color: var(--color-text-secondary);
+}
+
+.button:active {
+  transform: scale(0.96);
+}

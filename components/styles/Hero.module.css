@@ -1,0 +1,25 @@
+.hero {
+  text-align: center;
+  padding: 100px 32px 80px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.count {
+  font-size: clamp(80px, 18vw, 160px);
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  line-height: 0.9;
+  color: var(--color-black);
+  margin-bottom: 24px;
+}
+
+.subtitle {
+  font-size: clamp(24px, 4vw, 40px);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  color: var(--color-black);
+  line-height: 1.1;
+  max-width: 520px;
+  margin: 0 auto;
+}

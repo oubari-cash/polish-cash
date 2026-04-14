@@ -1,5 +1,10 @@
+import { Suspense } from "react";
 import { PolishCash } from "@/components/PolishCash";
 
 export default function Home() {
-  return <PolishCash />;
+  return (
+    <Suspense>
+      <PolishCash />
+    </Suspense>
+  );
 }

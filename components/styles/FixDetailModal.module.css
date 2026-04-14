@@ -1,0 +1,124 @@
+.content {
+  padding: 48px 48px 56px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1.25;
+  margin-bottom: 20px;
+  max-width: 500px;
+}
+
+.metaRow {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 48px;
+  flex-wrap: wrap;
+}
+
+.metaPill {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 5px 14px;
+  border-radius: var(--radius-full);
+  letter-spacing: -0.01em;
+}
+
+.comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.componentBox {
+  padding: 18px 22px;
+  background: var(--color-gray-50);
+  border-radius: var(--radius-md);
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.componentLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.componentName {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-black);
+  letter-spacing: -0.02em;
+}
+
+/* DetailPhone */
+.phoneLabel {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  display: block;
+  margin-bottom: 12px;
+}
+
+.phoneFrame {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background: var(--color-gray-100);
+  aspect-ratio: 9 / 19.5;
+  position: relative;
+}
+
+.phoneCaption {
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  letter-spacing: -0.01em;
+}
+
+/* DetailText */
+.textBox {
+  background: var(--color-gray-50);
+  border-radius: var(--radius-lg);
+  padding: 40px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  aspect-ratio: 9 / 13;
+}
+
+.textLabel {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.25);
+  margin-bottom: 12px;
+}
+
+.textValue {
+  font-size: 18px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.5);
+  letter-spacing: -0.02em;
+}
+
+@media (max-width: 600px) {
+  .comparison {
+    grid-template-columns: 1fr;
+  }
+
+  .content {
+    padding: 32px 24px 40px;
+  }
+}

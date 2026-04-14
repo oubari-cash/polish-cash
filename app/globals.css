@@ -6,6 +6,36 @@
   font-display: swap;
 }
 
+/* ─── Design Tokens (CSS Custom Properties) ─── */
+:root {
+  --color-green: #00E013;
+  --color-green-light: #e8f8ea;
+  --color-green-done: #16a34a;
+  --color-green-bg: #f0fbf0;
+  --color-black: #000;
+  --color-white: #fff;
+  --color-gray-50: #f7f7f7;
+  --color-gray-100: #f2f2f2;
+  --color-gray-200: #f0f0f0;
+  --color-gray-300: #e4e4e4;
+  --color-gray-400: #e0e0e0;
+  --color-gray-500: #e8e8e8;
+  --color-text-primary: #000;
+  --color-text-secondary: rgba(0,0,0,0.4);
+  --color-text-tertiary: rgba(0,0,0,0.3);
+  --color-text-muted: rgba(0,0,0,0.15);
+  --color-text-subtle: rgba(0,0,0,0.35);
+  --color-divider: rgba(0,0,0,0.06);
+  --color-scrim: rgba(0,0,0,0.4);
+  --color-header-bg: rgba(255,255,255,0.92);
+  --radius-sm: 8px;
+  --radius-md: 18px;
+  --radius-lg: 20px;
+  --radius-xl: 22px;
+  --radius-2xl: 28px;
+  --radius-full: 100px;
+}
+
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 html {
@@ -26,6 +56,33 @@ body {
 a   { text-decoration: none; color: inherit; }
 img { display: block; max-width: 100%; }
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+/* Skip to content link */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.skip-link:focus {
+  position: fixed;
+  left: 16px;
+  top: 16px;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  z-index: 1000;
+  padding: 12px 24px;
+  background: #000;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
 
 /* Smooth fade-in for sections */
 @keyframes fadeUp {

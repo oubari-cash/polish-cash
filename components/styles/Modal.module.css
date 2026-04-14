@@ -1,0 +1,64 @@
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: scrimIn 0.2s ease;
+  background: var(--color-scrim);
+}
+
+.dialog {
+  position: relative;
+  background: var(--color-white);
+  border-radius: var(--radius-2xl);
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: modalIn 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dialogDefault {
+  max-width: 580px;
+}
+
+.dialogWide {
+  max-width: 760px;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 3;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--color-gray-200);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  transition: background 0.15s;
+}
+
+.closeBtn:hover {
+  background: var(--color-gray-300);
+}
+
+@media (max-width: 640px) {
+  .dialog {
+    max-width: 100%;
+    max-height: 100vh;
+    border-radius: 0;
+    height: 100vh;
+  }
+
+  .scrim {
+    padding: 0;
+  }
+}

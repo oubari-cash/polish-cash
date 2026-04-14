@@ -3,3 +3,7 @@ node_modules/
 out/
 .DS_Store
 *.tsbuildinfo
+*.db
+*.db-wal
+*.db-shm
+.env.local

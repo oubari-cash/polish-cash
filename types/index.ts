@@ -14,6 +14,8 @@ export interface ProcessStep {
   num: string;
   title: string;
   desc: string;
+  /** "You" = designer action, "Automated" = runs without manual steps */
+  badge?: "You" | "Automated";
 }
 
 export interface SetupStep {

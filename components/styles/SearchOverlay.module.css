@@ -1,0 +1,255 @@
+/* Pathfinder-style search — light surface on Polish Cash */
+
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 15vh;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-bottom: 24px;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(12px) saturate(1.2);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.backdrop:not(.backdropLeaving) {
+  animation: overlayIn 0.2s ease forwards;
+}
+
+.backdropLeaving {
+  animation: backdropOut 0.2s ease-in forwards;
+}
+
+.searchBox {
+  position: relative;
+  z-index: 1;
+  width: 540px;
+  max-width: 90vw;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(60px) saturate(1.8) brightness(1.05);
+  -webkit-backdrop-filter: blur(60px) saturate(1.8) brightness(1.05);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.08),
+    0 8px 32px rgba(0, 0, 0, 0.04),
+    0 0 1px rgba(255, 255, 255, 0.7);
+  animation: searchIn 0.35s var(--search-spring, cubic-bezier(0.2, 0.9, 0.3, 1));
+}
+
+.searchBox::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(255, 255, 255, 0.2) 40%,
+    rgba(255, 255, 255, 0.35) 100%
+  );
+}
+
+.searchBox::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 16px;
+  right: 16px;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.9) 20%,
+    rgba(255, 255, 255, 0.9) 80%,
+    transparent
+  );
+  opacity: 0.6;
+}
+
+.searchBoxLeaving {
+  animation: searchOut 0.24s ease-in forwards;
+}
+
+.searchBoxInner {
+  position: relative;
+  z-index: 1;
+}
+
+.input {
+  width: 100%;
+  padding: 16px 20px;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  color: var(--color-black);
+  font-family: inherit;
+}
+
+.input::placeholder {
+  color: var(--color-text-tertiary);
+}
+
+.results {
+  max-height: 50vh;
+  overflow-y: auto;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.result {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 20px;
+  margin: 0;
+  text-align: left;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  font: inherit;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+  transition: background 0.2s cubic-bezier(0.2, 0.9, 0.3, 1);
+  user-select: none;
+}
+
+.result:last-child {
+  border-bottom: none;
+}
+
+.result:hover,
+.resultActive {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.resultDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.resultText {
+  flex: 1;
+  min-width: 0;
+}
+
+.resultTitle {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-black);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.resultSub {
+  display: block;
+  font-size: 10px;
+  color: var(--color-text-tertiary);
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.resultMeta {
+  font-size: 9px;
+  color: var(--color-text-tertiary);
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.empty {
+  padding: 20px;
+  text-align: center;
+  color: var(--color-text-tertiary);
+  font-size: 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+@keyframes overlayIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes backdropOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes searchIn {
+  from {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes searchOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop:not(.backdropLeaving),
+  .backdropLeaving,
+  .searchBox,
+  .searchBoxLeaving {
+    animation: none;
+  }
+
+  .searchBox {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .root {
+    padding-top: 12vh;
+  }
+
+  .searchBox {
+    width: 100%;
+    max-width: none;
+  }
+}

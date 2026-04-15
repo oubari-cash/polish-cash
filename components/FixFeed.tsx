@@ -6,23 +6,21 @@ import styles from "./styles/FixFeed.module.css";
 
 interface FixFeedProps {
   fixes: Fix[];
-  onSelectFix: (fix: Fix) => void;
-  onSetupClick: () => void;
 }
 
-export function FixFeed({ fixes, onSelectFix, onSetupClick }: FixFeedProps) {
+export function FixFeed({ fixes }: FixFeedProps) {
   return (
     <main id="main-content" className={styles.feed}>
       {fixes.map((fix, i) => (
-        <FixCard key={fix.id} fix={fix} index={i} onClick={() => onSelectFix(fix)} />
+        <FixCard key={fix.id} fix={fix} index={i} />
       ))}
 
       {fixes.length === 0 && (
         <div className={styles.empty}>
-          <div className={styles.emptyTitle}>Nothing here yet</div>
-          <button onClick={onSetupClick} className={styles.emptyButton}>
-            Set up this team →
-          </button>
+          <div className={styles.emptyTitle}>Nothing here</div>
+          <p className={styles.emptyBody}>
+            Time to go find some bugs to fix — we&apos;ll be right here when you do.
+          </p>
         </div>
       )}
     </main>

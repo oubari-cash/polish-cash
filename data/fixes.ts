@@ -138,11 +138,36 @@ export const FIXES: Fix[] = [
 ];
 
 export const PROCESS_STEPS: ProcessStep[] = [
-  { num: "01", title: "Spot it",      desc: "Run the app in simulator or on device. Screenshot any visual bug." },
-  { num: "02", title: "Post it",      desc: "Drop it in #cash-design-bugs with 'bug' + which team or area." },
-  { num: "03", title: "Auto-ticket",  desc: "Slack workflow creates a Linear ticket on the Design QA board." },
-  { num: "04", title: "Auto-fix",     desc: "@BuilderBot picks up the ticket, finds the component, opens a PR." },
-  { num: "05", title: "Ship it",      desc: "Engineer reviews, merges — fix appears on Polish Cash automatically." },
+  {
+    num: "01",
+    title: "Report it in Slack",
+    badge: "You",
+    desc: "In #polish-cash, open the Polish Cash workflow: describe the bug, choose which surface it's in, and attach a screenshot.",
+  },
+  {
+    num: "02",
+    title: "Linear triages the thread",
+    badge: "Automated",
+    desc: "The post goes to the channel for visibility. Linear checks for duplicates in the thread—new issues get a Cash Polish ticket with the right surface label; dupes link to the existing one.",
+  },
+  {
+    num: "03",
+    title: "BuilderBot opens a PR",
+    badge: "Automated",
+    desc: "BuilderBot figures out client vs server, which platforms are affected, locates the component, and lands a fix in a GitHub pull request.",
+  },
+  {
+    num: "04",
+    title: "Review, then merge",
+    badge: "You",
+    desc: "You review the PR—visual pass, tweaks if needed, snapshot checks—then an engineer gives final approval and merges.",
+  },
+  {
+    num: "05",
+    title: "It shows up here",
+    badge: "Automated",
+    desc: "Merged fixes hit this dashboard: before/after, who filed it, surface, and a link to the PR.",
+  },
 ];
 
 export const SETUP_STEPS: SetupStep[] = [

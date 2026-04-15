@@ -1,7 +1,8 @@
 .content {
-  max-width: 520px;
-  margin: 0 auto;
-  padding: 48px 40px 56px;
+  margin: 0;
+  padding: 48px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .title {
@@ -16,43 +17,221 @@
   font-size: 16px;
   font-weight: 500;
   color: var(--color-text-secondary);
-  line-height: 1.6;
+  line-height: 1.65;
   letter-spacing: -0.02em;
-  margin-bottom: 48px;
+  margin-bottom: 40px;
+}
+
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  /* Padding + margin between steps (24+24) + distance to next .railLine (6+8+2) */
+  --timeline-bridge: 64px;
 }
 
 .step {
   display: flex;
-  gap: 20px;
-  padding-bottom: 32px;
-  margin-bottom: 32px;
+  gap: 16px;
+  align-items: stretch;
+  padding-bottom: 24px;
+  margin-bottom: 24px;
+  overflow: visible;
+  position: relative;
 }
 
-.stepDivider {
-  border-bottom: 1px solid var(--color-divider);
+/* Later steps paint above earlier steps’ timeline bridges so dots sit on top of the line. */
+.step:nth-child(1) {
+  z-index: 1;
+}
+.step:nth-child(2) {
+  z-index: 2;
+}
+.step:nth-child(3) {
+  z-index: 3;
+}
+.step:nth-child(4) {
+  z-index: 4;
+}
+.step:nth-child(5) {
+  z-index: 5;
+}
+.step:nth-child(6) {
+  z-index: 6;
+}
+.step:nth-child(7) {
+  z-index: 7;
+}
+.step:nth-child(8) {
+  z-index: 8;
+}
+.step:nth-child(9) {
+  z-index: 9;
+}
+.step:nth-child(10) {
+  z-index: 10;
 }
 
-.stepNum {
-  font-size: 40px;
-  font-weight: 600;
-  letter-spacing: -0.04em;
-  color: var(--color-green);
-  line-height: 1;
+.step:last-child {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   flex-shrink: 0;
-  width: 52px;
+  width: 20px;
+  align-self: stretch;
+  position: relative;
+  z-index: 1;
+}
+
+.dotFirst {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--color-black);
+  background: var(--color-white);
+  box-sizing: border-box;
+  flex-shrink: 0;
+  margin-top: 4px;
+  position: relative;
+  z-index: 1;
+}
+
+.dotRest {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  /* Solid fill so the spine doesn’t read through the dot (was semi-transparent rgba). */
+  background: #dbdbdb;
+  flex-shrink: 0;
+  margin-top: 6px;
+  position: relative;
+  z-index: 1;
+}
+
+.railLine {
+  flex: 1 1 auto;
+  width: 1px;
+  min-height: 16px;
+  margin-top: 2px;
+  background: rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 0;
+}
+
+/* Continues the spine through padding + margin between steps (flex layout stops above that gap). */
+.railLine::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 1px;
+  height: var(--timeline-bridge);
+  background: rgba(0, 0, 0, 0.1);
+  z-index: 0;
+}
+
+.stepBody {
+  min-width: 0;
+  flex: 1;
+  padding-top: 0;
+}
+
+.stepHeading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 12px;
+  margin-bottom: 8px;
 }
 
 .stepTitle {
   font-size: 18px;
   font-weight: 600;
   letter-spacing: -0.03em;
-  margin-bottom: 6px;
+  line-height: 1.25;
+}
+
+.badgeYou {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border-radius: var(--radius-full);
+  line-height: 1;
+  color: var(--color-text-secondary);
+  background: var(--color-gray-50);
+}
+
+.badgeAuto {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 10px 4px 6px;
+  border-radius: var(--radius-full);
+  line-height: 1;
+  color: var(--color-text-secondary);
+  background: var(--color-gray-50);
+}
+
+.badgeAutoIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #00e013;
+  flex-shrink: 0;
+}
+
+.badgeAutoIcon svg {
+  display: block;
+  width: 10px;
+  height: 10px;
 }
 
 .stepDesc {
   font-size: 15px;
   font-weight: 500;
   color: var(--color-text-secondary);
-  line-height: 1.6;
+  line-height: 1.65;
   letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.stepDescLink {
+  color: var(--color-text-primary);
+  text-decoration: underline;
+  text-decoration-color: rgba(0, 0, 0, 0.22);
+  text-underline-offset: 2px;
+}
+
+.stepDescLink:hover {
+  text-decoration-color: var(--color-green);
+}
+
+@media (max-width: 640px) {
+  .content {
+    padding: 48px;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+
+  .stepHeading {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
 }

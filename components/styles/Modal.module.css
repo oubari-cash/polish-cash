@@ -6,8 +6,15 @@
   align-items: center;
   justify-content: center;
   padding: 24px;
-  animation: scrimIn 0.2s ease;
   background: var(--color-scrim);
+}
+
+.scrim:not(.scrimLeaving) {
+  animation: scrimEnter 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.scrimLeaving {
+  animation: scrimExit 0.24s cubic-bezier(0.4, 0, 1, 1) forwards;
 }
 
 .dialog {
@@ -17,7 +24,16 @@
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
-  animation: modalIn 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.06);
+  transform-origin: center center;
+}
+
+.dialog:not(.dialogLeaving) {
+  animation: modalEnter 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.dialogLeaving {
+  animation: modalExit 0.28s cubic-bezier(0.4, 0, 1, 1) forwards;
 }
 
 .dialogDefault {
@@ -48,6 +64,100 @@
 
 .closeBtn:hover {
   background: var(--color-gray-300);
+}
+
+@keyframes scrimEnter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scrimExit {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes modalEnter {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes modalExit {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrim:not(.scrimLeaving) {
+    animation: scrimEnterReduced 0.18s ease forwards;
+  }
+
+  .scrimLeaving {
+    animation: scrimExitReduced 0.16s ease forwards;
+  }
+
+  .dialog:not(.dialogLeaving) {
+    animation: modalEnterReduced 0.18s ease forwards;
+  }
+
+  .dialogLeaving {
+    animation: modalExitReduced 0.16s ease forwards;
+  }
+}
+
+@keyframes scrimEnterReduced {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scrimExitReduced {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes modalEnterReduced {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalExitReduced {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 
 @media (max-width: 640px) {

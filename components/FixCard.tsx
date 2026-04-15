@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { teamDotColor } from "@/lib/teamColors";
 import { color } from "@/lib/tokens";
 import type { Fix } from "@/types";
 import styles from "./styles/FixCard.module.css";
@@ -8,26 +9,27 @@ import styles from "./styles/FixCard.module.css";
 interface FixCardProps {
   fix: Fix;
   index?: number;
-  onClick: () => void;
 }
 
-export function FixCard({ fix, index = 0, onClick }: FixCardProps) {
+export function FixCard({ fix, index = 0 }: FixCardProps) {
   const hasImages = fix.before.image && fix.after.image;
+  const titleId = `fix-title-${fix.id}`;
 
   return (
     <article
-      onClick={onClick}
-      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onClick(); } }}
-      tabIndex={0}
-      role="button"
-      aria-label={fix.title}
+      id={`fix-${fix.id}`}
       className={styles.card}
-      style={{ "--index": index } as React.CSSProperties}
+      style={
+        {
+          "--index": index,
+          "--team": teamDotColor(fix.team),
+        } as React.CSSProperties
+      }
+      aria-labelledby={titleId}
     >
       {hasImages ? (
         <div className={styles.imageArea}>
           <Phone src={fix.before.image!} alt={fix.before.label} label="Before" />
-          <div className={styles.spacer} />
           <Phone src={fix.after.image!} alt={fix.after.label} label="After" />
         </div>
       ) : (
@@ -39,10 +41,15 @@ export function FixCard({ fix, index = 0, onClick }: FixCardProps) {
       )}
 
       <div className={styles.infoBar}>
-        <div className={styles.title}>{fix.title}</div>
+        <h2 id={titleId} className={styles.title}>
+          {fix.title}
+        </h2>
         <div className={styles.meta}>
           <Pill bg={color.green} color={color.black}>{fix.author}</Pill>
-          <Pill>{fix.team}</Pill>
+          <Pill>
+            <span className={styles.teamDot} aria-hidden />
+            {fix.team}
+          </Pill>
           <Pill>{fix.component}</Pill>
           <span style={{ flex: 1 }} />
           <Pill>{fix.pr}</Pill>

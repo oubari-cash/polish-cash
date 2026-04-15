@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import { FixCard } from "@/components/FixCard";
 import type { Fix } from "@/types";
 
@@ -30,14 +29,14 @@ const imageFix: Fix = {
 
 describe("FixCard", () => {
   it("renders title, author, and team", () => {
-    render(<FixCard fix={textFix} onClick={() => {}} />);
+    render(<FixCard fix={textFix} />);
     expect(screen.getByText(textFix.title)).toBeInTheDocument();
     expect(screen.getByText(textFix.author)).toBeInTheDocument();
     expect(screen.getByText(textFix.team)).toBeInTheDocument();
   });
 
   it("renders text-based before/after for fixes without images", () => {
-    render(<FixCard fix={textFix} onClick={() => {}} />);
+    render(<FixCard fix={textFix} />);
     expect(screen.getByText("Before")).toBeInTheDocument();
     expect(screen.getByText("After")).toBeInTheDocument();
     expect(screen.getByText("8px radius")).toBeInTheDocument();
@@ -45,20 +44,13 @@ describe("FixCard", () => {
   });
 
   it("renders image-based before/after for fixes with screenshots", () => {
-    render(<FixCard fix={imageFix} onClick={() => {}} />);
+    render(<FixCard fix={imageFix} />);
     const images = screen.getAllByRole("img");
     expect(images.length).toBe(2);
   });
 
-  it("calls onClick when clicked", async () => {
-    const onClick = vi.fn();
-    render(<FixCard fix={textFix} onClick={onClick} />);
-    await userEvent.click(screen.getByText(textFix.title));
-    expect(onClick).toHaveBeenCalledOnce();
-  });
-
   it("renders component name and PR number", () => {
-    render(<FixCard fix={textFix} onClick={() => {}} />);
+    render(<FixCard fix={textFix} />);
     expect(screen.getByText(textFix.component)).toBeInTheDocument();
     expect(screen.getByText(textFix.pr)).toBeInTheDocument();
   });

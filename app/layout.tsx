@@ -5,6 +5,10 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Polish Cash — Design QA Dashboard",
   description: "Track visual bugs found and fixed across Cash App. Spot a bug, post it in Slack, watch it get fixed automatically.",
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  },
   openGraph: {
     title: "Polish Cash",
     description: "Design QA dashboard — visual bugs found and fixed across Cash App",

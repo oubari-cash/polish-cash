@@ -1,10 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/drizzle";
 import { fixes } from "@/lib/schema";
-import { verifyGitHubSignature, extractLinearTicketId, extractImages } from "@/lib/integrations/github";
+import {
+  verifyGitHubSignature,
+  extractLinearTicketId,
+  extractFirstImage,
+  hasLabel,
+} from "@/lib/integrations/github";
 import { getTicketDetails } from "@/lib/integrations/linear";
+import { findSnapshotImage } from "@/lib/integrations/snapshots";
 
-const BUILDERBOT_AUTHOR = "builderbot";
+const DEFAULT_LABEL = "polish-cash";
+
+/**
+ * Wrap an external image URL so it renders via our same-origin proxy.
+ * Lets `next/image` load private-repo raw URLs without extra config and
+ * keeps the GitHub token server-side.
+ */
+function proxify(url: string | null | undefined): string | null {
+  if (!url) return null;
+  return `/api/images?src=${encodeURIComponent(url)}`;
+}
 
 export async function POST(req: NextRequest) {
   const secret = process.env.GITHUB_WEBHOOK_SECRET;
@@ -12,7 +28,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Webhook secret not configured" }, { status: 500 });
   }
 
-  // Read and verify payload
   const payload = await req.text();
   const signature = req.headers.get("x-hub-signature-256");
 
@@ -27,28 +42,24 @@ export async function POST(req: NextRequest) {
 
   const body = JSON.parse(payload);
 
-  // Only process merged PRs
   if (body.action !== "closed" || !body.pull_request?.merged) {
     return NextResponse.json({ ok: true, skipped: "not a merged PR" });
   }
 
   const pr = body.pull_request;
 
-  // Only process PRs opened by BuilderBot
-  const prAuthor = pr.user?.login?.toLowerCase() ?? "";
-  if (!prAuthor.includes(BUILDERBOT_AUTHOR)) {
-    return NextResponse.json({ ok: true, skipped: "not a BuilderBot PR" });
+  const labelName = process.env.POLISH_CASH_LABEL ?? DEFAULT_LABEL;
+  if (!hasLabel(pr.labels, labelName)) {
+    return NextResponse.json({ ok: true, skipped: `missing ${labelName} label` });
   }
 
-  // Extract data from the PR
-  const prBody = pr.body ?? "";
+  const prBody: string = pr.body ?? "";
   const ticketId = extractLinearTicketId(prBody);
-  const images = extractImages(prBody);
+  const beforeRaw = extractFirstImage(prBody);
 
-  // Enrich with Linear data if we found a ticket reference
+  // Linear enrichment (team + canonical title)
   let team = "Unknown";
   let title = pr.title;
-
   if (ticketId) {
     const ticket = await getTicketDetails(ticketId);
     if (ticket) {
@@ -57,17 +68,29 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // Extract component name from branch or PR title
-  // BuilderBot branches often follow patterns like "fix/ComponentName-issue"
-  const branchName = pr.head?.ref ?? "";
+  // Snapshot-diff discovery for the "after" image
+  const repoFullName: string = pr.base?.repo?.full_name ?? "";
+  const [owner, repo] = repoFullName.split("/");
+  let afterRaw: string | null = null;
+  if (owner && repo && pr.head?.sha && pr.base?.sha) {
+    const snap = await findSnapshotImage({
+      owner,
+      repo,
+      prNumber: pr.number,
+      headSha: pr.head.sha,
+      baseSha: pr.base.sha,
+    });
+    afterRaw = snap?.headRawUrl ?? null;
+  }
+
+  // Component from branch name: "fix/ComponentName-..."
+  const branchName: string = pr.head?.ref ?? "";
   const componentMatch = branchName.match(/fix\/([A-Z][a-zA-Z]+)/);
   const component = componentMatch ? componentMatch[1] : "Unknown";
 
-  // Format the date
   const mergedAt = pr.merged_at ?? new Date().toISOString();
   const date = new Date(mergedAt).toLocaleDateString("en-US", { month: "short", day: "numeric" });
 
-  // Insert the fix into the database
   db.insert(fixes).values({
     title,
     team,
@@ -76,9 +99,9 @@ export async function POST(req: NextRequest) {
     pr: `#${pr.number}`,
     date,
     beforeLabel: "Before",
-    beforeImage: images.before,
+    beforeImage: proxify(beforeRaw),
     afterLabel: "After",
-    afterImage: images.after,
+    afterImage: proxify(afterRaw),
     prUrl: pr.html_url ?? null,
     linearTicketId: ticketId,
     slackThreadUrl: null,

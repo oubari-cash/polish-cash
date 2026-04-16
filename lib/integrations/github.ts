@@ -1,5 +1,5 @@
 /**
- * GitHub webhook signature verification.
+ * GitHub webhook signature verification and PR body parsing.
  */
 import { createHmac, timingSafeEqual } from "crypto";
 
@@ -33,20 +33,27 @@ export function extractLinearTicketId(body: string): string | null {
 }
 
 /**
- * Extract image URLs from markdown content (PR body or comments).
- * Returns [beforeImage, afterImage] or nulls if not found.
+ * Extract the first image URL from a PR body.
+ * Supports both markdown image syntax ![alt](url) and HTML <img src="url">.
+ * GitHub's drag-and-drop into PR descriptions produces <img> tags, so both
+ * forms need to work.
  */
-export function extractImages(body: string): { before: string | null; after: string | null } {
-  const imagePattern = /!\[.*?\]\((https?:\/\/[^\s)]+)\)/g;
-  const images: string[] = [];
+export function extractFirstImage(body: string): string | null {
+  const markdown = body.match(/!\[.*?\]\((https?:\/\/[^\s)]+)\)/);
+  if (markdown) return markdown[1];
 
-  let match;
-  while ((match = imagePattern.exec(body)) !== null) {
-    images.push(match[1]);
-  }
+  const html = body.match(/<img[^>]+src=["'](https?:\/\/[^"']+)["']/i);
+  return html ? html[1] : null;
+}
 
-  return {
-    before: images[0] ?? null,
-    after: images[1] ?? null,
-  };
+/**
+ * Case-insensitive label presence check against a GitHub PR labels array.
+ */
+export function hasLabel(
+  labels: Array<{ name: string }> | undefined,
+  labelName: string
+): boolean {
+  if (!labels?.length) return false;
+  const target = labelName.toLowerCase();
+  return labels.some((l) => l.name?.toLowerCase() === target);
 }
